@@ -180,13 +180,63 @@ th mat-icon {
   font-size: 20px;
 }
 
-/* Íconos de ordenamiento */
 mat-icon.active {
   color: white;
 }
 
 mat-icon.inactive {
   color: rgba(255, 255, 255, 0.5);
+}
+
+.no-data {
+  text-align: center;
+  font-style: italic;
+  padding: 1rem;
+}
+
+.mat-row {
+  transition: all 0.3s ease;
+}
+
+.table-container.loading .mat-row:not(.loading-row) {
+  display: none;
+}
+
+.loading-row {
+  position: absolute;
+  top: 56px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.9);
+  z-index: 2;
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.no-data {
+  text-align: center;
+  font-style: italic;
+  padding: 1rem;
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
 }
 
 /* Responsive */

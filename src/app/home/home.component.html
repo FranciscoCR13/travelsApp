@@ -13,7 +13,6 @@
   </div>
 </div>
 
-@if (loading){
 <div class="filter-section">
   <form class="filter-form" #form="ngForm">
     <div class="filter-grid">
@@ -123,7 +122,7 @@
 
     <!-- Columna Fecha -->
     <ng-container matColumnDef="fecha">
-      <th mat-header-cell *matHeaderCellDef (click)="sortBy('startDate')">
+      <th mat-header-cell *matHeaderCellDef (click)="sortBy('date')">
         Fecha
         <mat-icon [ngClass]="{'active': sortColumn === 'startDate', 'inactive': sortColumn !== 'startDate'}">
           {{ getSortIcon('startDate') }}
@@ -164,8 +163,16 @@
 
     <tr mat-header-row *matHeaderRowDef="columns"></tr>
     <tr mat-row *matRowDef="let row; columns: columns"></tr>
+    
+    <ng-container *matNoDataRow>
+      <tr class="mat-row">
+        <td class="mat-cell no-data" [attr.colspan]="columns.length" *ngIf="!loading && dataSource.filteredData.length === 0">
+          No se encontraron registros
+        </td>
+      </tr>
+    </ng-container>
   </table>
 </div>
-}@else{
+<div *ngIf="loading" class="loading-overlay">
   <app-loading></app-loading>
-}
+</div>

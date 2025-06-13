@@ -62,9 +62,9 @@
       operatorId: [0, [Validators.required, Validators.min(1)]],
       statusId: [0, [Validators.required, Validators.min(1)]],
       startDate: ['', Validators.required],
-      startTime: ['', [Validators.required, Validators.pattern(/^([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/)]],
+      startTime: ['', [Validators.required, Validators.pattern(/^([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$/)]],
       endDate: ['', Validators.required],
-      endTime: ['', [Validators.required, Validators.pattern(/^([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/)]],
+      endTime: ['', [Validators.required, Validators.pattern(/^([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$/)]],
       notes: ['']
     });
 
@@ -73,17 +73,34 @@
         this.form.patchValue(this.model)
       }
 
-      this.operatorService.getOperator().subscribe(data => {
+      this.operatorService.getActiveOperator().subscribe(data => {
         this.operators = data;
       });
 
-      this.placeService.getPlace().subscribe(data => {
+      this.operatorService.getOperatorsForEdit(this.model?.operatorId).subscribe(data => {
+        this.operators = data;
+      });
+
+      this.placeService.getActivePlaces().subscribe(data => {
         this.places = data;
       });
+
+      if (this.model?.originId) {
+        this.placeService.getPlacesForEdit(this.model.originId).subscribe(data => {
+          this.places = data;
+        });
+      }
+
+      if (this.model?.destinationId && this.model.destinationId !== this.model.originId) {
+        this.placeService.getPlacesForEdit(this.model.destinationId).subscribe(data => {
+          this.places = [...this.places, ...data.filter(p => !this.places.some(x => x.id === p.id))];
+        });
+      }
 
       this.travelStatusService.getTravelStatus().subscribe(data => {
         this.status = data;
       });
+
       this.form.setValidators(this.dateTimeRangeValidator);
 
       this.form.valueChanges.subscribe(() => {
@@ -98,10 +115,9 @@
       const endTime = control.get('endTime')?.value;
 
       if (!startDate || !startTime || !endDate || !endTime) {
-        return null; // Deja que los required hagan su trabajo
+        return null;
       }
 
-      // Combinar fecha y hora para comparar
       const start = new Date(startDate);
       const [startH, startM] = startTime.split(':').map(Number);
       start.setHours(startH, startM, 0);

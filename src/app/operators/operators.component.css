@@ -78,6 +78,22 @@
   color: #3f51b5;
 }
 
+.no-data {
+  text-align: center;
+  font-style: italic;
+  padding: 1rem;
+}
+
+.active-icon {
+  color: green;
+  cursor: pointer;
+}
+
+.inactive-icon {
+  color: red;
+  cursor: pointer;
+}
+
 /* Responsive */
 @media (max-width: 600px) {
   .operators-table th, 

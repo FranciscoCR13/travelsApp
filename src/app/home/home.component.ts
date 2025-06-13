@@ -55,14 +55,12 @@ export class HomeComponent {
   operators: any[] = [];
   status: any[] = [];
 
-  loading = false;
+  loading = true;
 
   columns = ['name', 'origen', 'destino', 'operador', 'fecha', 'estatus', 'actions'];
 
-  // Aquí la dataSource de Angular Material Table
-  dataSource = new MatTableDataSource<Travel>([]);
+  dataSource = new MatTableDataSource<Travel>([]);  
 
-  // Filtros vinculados al formulario
   filterName = '';
   filterOriginId: number | null = null;
   filterDestinationId: number | null = null;
@@ -79,15 +77,30 @@ export class HomeComponent {
   }
 
   loadData() {
-    this.placeService.getPlace().subscribe(p => {
-      this.places = p;
-      this.operatorService.getOperator().subscribe(op => {
-        this.operators = op;
-        this.travelStatusService.getTravelStatus().subscribe(st => {
-          this.status = st;
-          this.loadTravels();
+    this.placeService.getPlace().subscribe({
+      next: (p) => {
+        this.places = p;
+        this.operatorService.getOperator().subscribe({
+          next: (op) => {
+            this.operators = op;
+            this.travelStatusService.getTravelStatus().subscribe({
+              next: (st) => {
+                this.status = st;
+                this.loadTravels();
+              },
+              error: (err) => {
+                this.loading = false;
+              }
+            });
+          },
+          error: (err) => {
+            this.loading = false;
+          }
         });
-      });
+      },
+      error: (err) => {
+        this.loading = false;
+      }
     });
   }
 
@@ -103,17 +116,27 @@ export class HomeComponent {
       sortColumn: this.sortColumn,
       sortDirection: this.sortDirection
     };
-    this.travelService.getTravelsFiltered(filters).subscribe(travels => {
-      this.travels = travels;
-      this.dataSource.data = travels;  // Actualizamos el datasource con los datos filtrados
+    this.travelService.getTravelsFiltered(filters).subscribe({
+      next: (travels) => {
+        this.dataSource.data = travels || [];
+        this.loading = false;
+      },
+      error: () => {
+        this.dataSource.data = [];
+        this.loading = false;
+      }
     });
   }
 
   applyFilters() {
+    this.dataSource.data = [];
+    this.loading = true;
     this.loadTravels();
   }
 
   sortBy(column: string) {
+    this.dataSource.data = [];
+    this.loading = true;
     if (this.sortColumn === column) {
       this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
     } else {
@@ -168,6 +191,8 @@ export class HomeComponent {
   }
 
   clearFilters() {
+    this.dataSource.data = [];
+    this.loading = true;
     this.filterName = '';
     this.filterOriginId = null;
     this.filterDestinationId = null;
