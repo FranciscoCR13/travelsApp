@@ -1,0 +1,176 @@
+<div class="form-container">
+  <div class="form-header">
+    <h1 class="title">{{title}}</h1>
+    <div class="header-actions">
+      <a mat-stroked-button routerLink="/" class="cancel-button">
+        <mat-icon>arrow_back</mat-icon> Volver
+      </a>
+    </div>
+  </div>
+
+  <form (submit)="guardarCambios()" [formGroup]="form" class="travel-form">
+    <div class="form-grid">
+      <!-- Nombre -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nombre del Viaje</mat-label>
+        <input [formControl]="form.controls.name" matInput placeholder="Ej: Viaje CDMX a Guadalajara"/>
+        <mat-icon matPrefix>directions_bus</mat-icon>
+        <mat-error *ngIf="form.controls.name.hasError('required') && form.controls.name.touched">
+          El nombre es obligatorio
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Origen -->
+      <mat-form-field appearance="outline">
+        <mat-label>Origen</mat-label>
+        <mat-select formControlName="originId">
+          <mat-option [value]="0">Selecciona origen...</mat-option>
+          <mat-option *ngFor="let place of places" [value]="place.id">
+            <div class="location-option">
+              {{ place.name }}
+            </div>
+          </mat-option>
+        </mat-select>
+        <mat-icon matPrefix>flight_takeoff</mat-icon>
+        <mat-error *ngIf="form.controls.originId.hasError('required') && form.controls.originId.touched">
+          El origen es obligatorio
+        </mat-error>
+        <mat-error *ngIf="form.controls.originId.hasError('min') && form.controls.originId.touched">
+          Debes seleccionar un origen
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Destino -->
+      <mat-form-field appearance="outline">
+        <mat-label>Destino</mat-label>
+        <mat-select formControlName="destinationId">
+          <mat-option [value]="0">Selecciona destino...</mat-option>
+          <mat-option *ngFor="let place of places" [value]="place.id">
+            <div class="location-option">
+              {{ place.name }}
+            </div>
+          </mat-option>
+        </mat-select>
+        <mat-icon matPrefix>flight_land</mat-icon>
+        <mat-error *ngIf="form.controls.destinationId.hasError('required') && form.controls.destinationId.touched">
+          El destino es obligatorio
+        </mat-error>
+        <mat-error *ngIf="form.controls.destinationId.hasError('min') && form.controls.destinationId.touched">
+          Debes seleccionar un destino
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Operador -->
+      <mat-form-field appearance="outline">
+        <mat-label>Operador</mat-label>
+        <mat-select formControlName="operatorId">
+          <mat-option [value]="0">Selecciona operador...</mat-option>
+          <mat-option *ngFor="let operator of operators" [value]="operator.id">
+            <div class="operator-option">
+              {{ operator.name }} {{ operator.lastName }}
+            </div>
+          </mat-option>
+        </mat-select>
+        <mat-icon matPrefix>person</mat-icon>
+        <mat-error *ngIf="form.controls.operatorId.hasError('required') && form.controls.operatorId.touched">
+          El operador es obligatorio
+        </mat-error>
+        <mat-error *ngIf="form.controls.operatorId.hasError('min') && form.controls.operatorId.touched">
+          Debes seleccionar un operador
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Estatus -->
+      <mat-form-field appearance="outline">
+        <mat-label>Estatus</mat-label>
+        <mat-select formControlName="statusId">
+          <mat-option [value]="0">Selecciona estatus...</mat-option>
+          <mat-option *ngFor="let stat of status" [value]="stat.id">
+            <div class="status-option">
+              {{ stat.name }}
+            </div>
+          </mat-option>
+        </mat-select>
+        <mat-icon matPrefix>dashboard</mat-icon>
+        <mat-error *ngIf="form.controls.statusId.hasError('required') && form.controls.statusId.touched">
+          El estatus es obligatorio
+        </mat-error>
+        <mat-error *ngIf="form.controls.statusId.hasError('min') && form.controls.statusId.touched">
+          Debes seleccionar un estatus
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Fecha Inicial y Hora Inicial -->
+      <div class="date-time-group">
+        <mat-form-field appearance="outline">
+          <mat-label>Fecha Inicial</mat-label>
+          <mat-datepicker-toggle matPrefix [for]="pickerStartDate"></mat-datepicker-toggle>
+          <input
+            matInput
+            [matDatepicker]="pickerStartDate"
+            formControlName="startDate"
+            (focus)="pickerStartDate.open()" />
+          <mat-datepicker #pickerStartDate></mat-datepicker>
+          <mat-error *ngIf="form.controls.startDate.hasError('required') && form.controls.startDate.touched">
+            La fecha inicial es obligatoria
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="time-field">
+          <mat-label>Hora Inicial</mat-label>
+          <input matInput type="time" formControlName="startTime" />
+          <mat-icon matPrefix>schedule</mat-icon>
+          <mat-error *ngIf="form.controls.startTime.hasError('required') && form.controls.startTime.touched">
+            La hora inicial es obligatoria
+          </mat-error>
+          <mat-error *ngIf="form.controls.startTime.hasError('pattern') && form.controls.startTime.touched">
+            La hora inicial debe tener formato HH:mm
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Fecha Final y Hora Final -->
+      <div class="date-time-group">
+        <mat-form-field appearance="outline">
+          <mat-label>Fecha Final</mat-label>
+          <mat-datepicker-toggle matPrefix [for]="pickerEndDate"></mat-datepicker-toggle>
+          <input
+            matInput
+            [matDatepicker]="pickerEndDate"
+            formControlName="endDate"
+            (focus)="pickerEndDate.open()" />
+          <mat-datepicker #pickerEndDate></mat-datepicker>
+          <mat-error *ngIf="form.controls.endDate.hasError('required') && form.controls.endDate.touched">
+            La fecha final es obligatoria
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="time-field">
+          <mat-label>Hora Final</mat-label>
+          <input matInput type="time" formControlName="endTime" />
+          <mat-icon matPrefix>schedule</mat-icon>
+          <mat-error *ngIf="form.controls.endTime.hasError('required') && form.controls.endTime.touched">
+            La hora final es obligatoria
+          </mat-error>
+          <mat-error *ngIf="form.controls.endTime.hasError('pattern') && form.controls.endTime.touched">
+            La hora final debe tener formato HH:mm
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Error rango fecha/hora -->
+    <div *ngIf="form.hasError('dateRangeInvalid') && form.touched" class="error-message" style="color: red; margin: 10px 0;">
+      La fecha y hora de inicio deben ser anteriores a la fecha y hora de fin.
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" mat-raised-button color="primary" class="submit-button">
+        <mat-icon>save</mat-icon> Guardar Viaje
+      </button>
+      <button type="button" mat-stroked-button routerLink="/" class="cancel-button">
+        <mat-icon>cancel</mat-icon> Cancelar
+      </button>
+    </div>
+  </form>
+</div>

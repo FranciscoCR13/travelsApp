@@ -1,0 +1,143 @@
+/* Contenedor principal */
+.form-container {
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* Cabecera del formulario */
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.form-header .title {
+  color: #01579b;
+  font-weight: 700;
+  margin: 0;
+  padding-top: 20px;
+}
+
+.header-actions {
+  padding-top: 20px;
+  display: flex;
+  gap: 16px;
+}
+
+/* Estructura del formulario */
+.travel-form {
+  width: 100%;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(300px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.form-grid .full-width {
+  grid-column: 1 / -1;
+}
+
+/* Grupos de fecha y hora */
+.date-time-group {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.date-time-group .time-field {
+  flex: 1;
+  min-width: 200px;
+}
+
+/* Campos del formulario */
+mat-form-field {
+  width: 100%;
+}
+
+mat-form-field mat-icon[matPrefix] {
+  margin-right: 8px;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+/* Opciones de selects */
+.location-option,
+.operator-option,
+.status-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Acciones del formulario */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.submit-button,
+.cancel-button {
+  padding: 0 24px;
+  height: 44px;
+  font-weight: 500;
+}
+
+.submit-button mat-icon,
+.cancel-button mat-icon {
+  margin-right: 8px;
+}
+
+/* Iconos de estado */
+.status-icon.completed {
+  color: #4caf50;
+}
+
+.status-icon.in-progress {
+  color: #ffc107;
+}
+
+.status-icon.cancelled {
+  color: #f44336;
+}
+
+.status-icon.scheduled {
+  color: #2196f3;
+}
+
+/* Botón de cancelar */
+.cancel-button {
+  margin-left: 0.5rem;
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .date-time-group {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .date-time-group .time-field {
+    width: 100%;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .submit-button,
+  .cancel-button {
+    width: 100%;
+  }
+}

@@ -1,0 +1,9 @@
+.contenedor {
+  max-width: calc(100vw - 10vh);
+  margin: 12px auto 0;
+  padding: 0 28px;
+  min-height: calc(100vh - 20vh);
+  background: #f9fbfc;
+  border-radius: 8px;
+  box-sizing: border-box;
+}

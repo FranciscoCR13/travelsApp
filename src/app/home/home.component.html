@@ -1,0 +1,171 @@
+<div class="page-header">
+  <h1 class="title">Listado de Viajes</h1>
+  <div class="header-actions">
+    <button type="button" mat-raised-button color="primary" class="action-button" (click)="applyFilters()">
+      <mat-icon>search</mat-icon> Filtrar
+    </button>
+    <button type="button" mat-raised-button color="primary" class="action-button" (click)="clearFilters()">
+      <mat-icon>clear</mat-icon> Limpiar
+    </button>
+    <button type="button" mat-raised-button color="primary" class="action-button" routerLink="/createTravel">
+      <mat-icon>add</mat-icon> Nuevo Viaje
+    </button>
+  </div>
+</div>
+
+@if (loading){
+<div class="filter-section">
+  <form class="filter-form" #form="ngForm">
+    <div class="filter-grid">
+      <!-- Filtro Nombre -->
+      <mat-form-field appearance="outline" class="compact-field">
+        <mat-icon matPrefix>directions_bus</mat-icon>
+        <mat-label>Nombre del viaje</mat-label>
+        <input matInput [(ngModel)]="filterName" name="filterName" placeholder="Buscar por nombre">
+      </mat-form-field>
+
+      <!-- Filtro Origen -->
+      <mat-form-field appearance="outline" class="compact-field">
+        <mat-icon matPrefix>flight_takeoff</mat-icon>
+        <mat-label>Origen</mat-label>
+        <mat-select [(ngModel)]="filterOriginId" name="filterOriginId">
+          <mat-option [value]="null">Todos los orígenes</mat-option>
+          <mat-option *ngFor="let place of places" [value]="place.id">{{ place.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Filtro Destino -->
+      <mat-form-field appearance="outline" class="compact-field">
+        <mat-icon matPrefix>flight_land</mat-icon>
+        <mat-label>Destino</mat-label>
+        <mat-select [(ngModel)]="filterDestinationId" name="filterDestinationId">
+          <mat-option [value]="null">Todos los destinos</mat-option>
+          <mat-option *ngFor="let place of places" [value]="place.id">{{ place.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Filtro Operador -->
+      <mat-form-field appearance="outline" class="compact-field">
+        <mat-icon matPrefix>person</mat-icon>
+        <mat-label>Operador</mat-label>
+        <mat-select [(ngModel)]="filterOperatorId" name="filterOperatorId">
+          <mat-option [value]="null">Todos los operadores</mat-option>
+          <mat-option *ngFor="let op of operators" [value]="op.id">{{ op.name }} {{ op.lastName }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Filtro Estatus -->
+      <mat-form-field appearance="outline" class="compact-field">
+        <mat-icon matPrefix>dashboard</mat-icon>
+        <mat-label>Estatus</mat-label>
+        <mat-select [(ngModel)]="filterStatusId" name="filterStatusId">
+          <mat-option [value]="null">Todos los estatus</mat-option>
+          <mat-option *ngFor="let st of status" [value]="st.id">{{ st.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Filtro Fecha -->
+      <mat-form-field appearance="outline" class="compact-field">
+        <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
+        <mat-label>Fecha</mat-label>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="filterDate" name="filterDate" placeholder="Filtrar por fecha">
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </form>
+</div>
+
+<div class="table-container">
+  <table mat-table [dataSource]="dataSource" class="travel-table mat-elevation-z2">
+    <!-- Columna Nombre -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef (click)="sortBy('name')">
+        Nombre
+        <mat-icon [ngClass]="{'active': sortColumn === 'name', 'inactive': sortColumn !== 'name'}">
+          {{ getSortIcon('name') }}
+        </mat-icon>
+      </th>
+      <td mat-cell *matCellDef="let travel" class="travel-name">{{ travel.name }}</td>
+    </ng-container>
+
+    <!-- Columna Origen -->
+    <ng-container matColumnDef="origen">
+      <th mat-header-cell *matHeaderCellDef (click)="sortBy('origin')">
+        Origen
+        <mat-icon [ngClass]="{'active': sortColumn === 'origin', 'inactive': sortColumn !== 'origin'}">
+          {{ getSortIcon('origin') }}
+        </mat-icon>
+      </th>
+      <td mat-cell *matCellDef="let travel">{{ getPlaceName(travel.originId) }}</td>
+    </ng-container>
+
+    <!-- Columna Destino -->
+    <ng-container matColumnDef="destino">
+      <th mat-header-cell *matHeaderCellDef (click)="sortBy('destination')">
+        Destino
+        <mat-icon [ngClass]="{'active': sortColumn === 'destination', 'inactive': sortColumn !== 'destination'}">
+          {{ getSortIcon('destination') }}
+        </mat-icon>
+      </th>
+      <td mat-cell *matCellDef="let travel">{{ getPlaceName(travel.destinationId) }}</td>
+    </ng-container>
+
+    <!-- Columna Operador -->
+    <ng-container matColumnDef="operador">
+      <th mat-header-cell *matHeaderCellDef (click)="sortBy('operator')">
+        Operador
+        <mat-icon [ngClass]="{'active': sortColumn === 'operator', 'inactive': sortColumn !== 'operator'}">
+          {{ getSortIcon('operator') }}
+        </mat-icon>
+      </th>
+      <td mat-cell *matCellDef="let travel">{{ getOperatorName(travel.operatorId) }}</td>
+    </ng-container>
+
+    <!-- Columna Fecha -->
+    <ng-container matColumnDef="fecha">
+      <th mat-header-cell *matHeaderCellDef (click)="sortBy('startDate')">
+        Fecha
+        <mat-icon [ngClass]="{'active': sortColumn === 'startDate', 'inactive': sortColumn !== 'startDate'}">
+          {{ getSortIcon('startDate') }}
+        </mat-icon>
+      </th>
+      <td mat-cell *matCellDef="let travel">{{ formatDate(travel.startDate) }}</td>
+    </ng-container>
+
+    <!-- Columna Estatus -->
+    <ng-container matColumnDef="estatus">
+      <th mat-header-cell *matHeaderCellDef (click)="sortBy('status')">
+        Estatus
+        <mat-icon [ngClass]="{'active': sortColumn === 'status', 'inactive': sortColumn !== 'status'}">
+          {{ getSortIcon('status') }}
+        </mat-icon>
+      </th>
+      <td mat-cell *matCellDef="let travel">
+        <span class="status-badge" [style.background]="getStatusColor(travel.statusId)">
+          {{ getStatusName(travel.statusId) }}
+        </span>
+      </td>
+    </ng-container>
+
+    <!-- Columna Acciones -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+      <td mat-cell *matCellDef="let travel">
+        <div class="action-buttons">
+          <button mat-icon-button color="primary" matTooltip="Editar" routerLink="/editTravel/{{travel.id}}">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" matTooltip="Eliminar" (click)="delete(travel.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+    <tr mat-row *matRowDef="let row; columns: columns"></tr>
+  </table>
+</div>
+}@else{
+  <app-loading></app-loading>
+}

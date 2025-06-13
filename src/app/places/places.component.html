@@ -1,0 +1,50 @@
+<div class="page-header">
+  <h1 class="title">Lugares Registrados</h1>
+</div>
+
+@if (places) {
+<div class="table-container">
+  <table mat-table [dataSource]="places" class="places-table mat-elevation-z2">
+    <!-- Columna Nombre -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Lugar</th>
+      <td mat-cell *matCellDef="let place">{{ place.name }}</td>
+    </ng-container>
+
+    <!-- Columna País -->
+    <ng-container matColumnDef="country">
+      <th mat-header-cell *matHeaderCellDef>País</th>
+      <td mat-cell *matCellDef="let place">{{ place.country }}</td>
+    </ng-container>
+
+    <!-- Columna Estado -->
+    <ng-container matColumnDef="state">
+      <th mat-header-cell *matHeaderCellDef>Estado</th>
+      <td mat-cell *matCellDef="let place">{{ place.state }}</td>
+    </ng-container>
+
+    <!-- Columna Ciudad -->
+    <ng-container matColumnDef="city">
+      <th mat-header-cell *matHeaderCellDef>Ciudad</th>
+      <td mat-cell *matCellDef="let place">{{ place.city }}</td>
+    </ng-container>
+
+    <!-- Columna Dirección -->
+    <ng-container matColumnDef="address">
+      <th mat-header-cell *matHeaderCellDef>Dirección</th>
+      <td mat-cell *matCellDef="let place">{{ place.address }}</td>
+    </ng-container>
+
+    <!-- Columna Código Postal -->
+    <ng-container matColumnDef="zipCode">
+      <th mat-header-cell *matHeaderCellDef>Código Postal</th>
+      <td mat-cell *matCellDef="let place">{{ place.zipCode }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+    <tr mat-row *matRowDef="let row; columns: columns"></tr>
+  </table>
+</div>
+} @else {
+  <app-loading></app-loading>
+}

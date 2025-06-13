@@ -1,0 +1,19 @@
+<mat-toolbar class="toolbar-light">
+  <div class="toolbar-content">
+    <img src="logo.png" alt="Logo Agencia" class="logo" />
+
+    <div class="menu-buttons">
+      <button type="button" mat-raised-button color="primary" class="action-button" routerLink="" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+        <mat-icon>public</mat-icon> Viajes
+      </button>
+      <button type="button" mat-raised-button color="primary" class="action-button" routerLink="places" routerLinkActive="active-link">
+        <mat-icon>pin_drop</mat-icon> Lugares
+      </button>
+      <button type="button" mat-raised-button color="primary" class="action-button" routerLink="operators" routerLinkActive="active-link">
+        <mat-icon>groups</mat-icon> Operadores
+      </button>
+    </div>
+  </div>
+</mat-toolbar>
+
+<div class="menu-underline"></div>

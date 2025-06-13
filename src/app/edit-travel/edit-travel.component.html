@@ -1,0 +1,5 @@
+@if (model){
+    <app-form-travel title="Editar Viaje" [model]="model" (postForm)="guardarCambios($event)"></app-form-travel>
+}@else{
+  <app-loading></app-loading>
+}

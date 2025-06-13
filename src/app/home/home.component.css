@@ -1,0 +1,219 @@
+/* Estilos generales */
+:host {
+  display: block;
+  padding: 20px;
+}
+
+/* Encabezado de página */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.title {
+  color: #3f51b5;
+  font-weight: 500;
+  font-size: 24px;
+  margin: 0;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.clear-button {
+  background-color: #f5f5f5;
+  color: #757575;
+}
+
+.create-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+/* Sección de filtros */
+.filter-section {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px 20px 0 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.filter-form {
+  width: 100%;
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+}
+
+.compact-field {
+  width: 100%;
+}
+
+.compact-field .mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+
+.compact-field .mat-form-field-flex {
+  height: 48px;
+  align-items: center;
+}
+
+.compact-field .mat-form-field-infix {
+  padding: 0;
+  border-top: 0;
+}
+
+.compact-field .mat-input-element, 
+.compact-field .mat-select-value {
+  font-size: 14px;
+}
+
+/* Tabla de viajes */
+.table-container {
+  max-height: calc(100vh - 50vh);
+  background-color: white;
+  border-radius: 8px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.table-container {
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.1);
+  border-radius: 4px;
+}
+
+.travel-table {
+  width: 100%;
+}
+
+th mat-icon, th {
+  vertical-align: middle;
+}
+
+th mat-icon {
+  padding-top: 2px;
+  font-size: 20px;
+}
+
+.travel-table th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #3f51b5;
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 12px 16px;
+  vertical-align: middle;
+}
+
+.travel-table td {
+  padding: 12px 16px;
+  font-size: 14px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.travel-table tr:not(:last-child) td {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.travel-table tr:hover td {
+  background-color: #f5f5f5;
+}
+
+.travel-name {
+  font-weight: 500;
+  color: #3f51b5;
+}
+
+/* Badge de estatus */
+.status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  color: white;
+  text-align: center;
+  min-width: 80px;
+}
+
+/* Botones de acción */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.action-buttons button {
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
+}
+
+.action-buttons button mat-icon {
+  font-size: 20px;
+}
+
+/* Íconos de ordenamiento */
+mat-icon.active {
+  color: white;
+}
+
+mat-icon.inactive {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Responsive */
+@media (max-width: 960px) {
+  .filter-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+  
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .header-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 600px) {
+  .filter-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .travel-table th, 
+  .travel-table td {
+    padding: 8px 12px;
+  }
+}
